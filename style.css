@@ -1,0 +1,68 @@
+md-content .item-list{
+  background-color: #F9F9F9!important;
+  padding: 30px;
+  overflow:hidden;
+}
+.selected-item ~ .item .category,
+.item:first-child .category {
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
+}
+.selected-item ~ .item .category.selected,
+.item:first-child .category.selected {
+  margin-top: 0;
+}
+.item:last-child .category {
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+.item .tile .folded {
+  cursor: pointer;
+  padding: 0 10px 0 30px;
+}
+.item .category {
+  background-color: white;
+  transition: all 500ms;
+}
+.item .category h3,
+.item .category p {
+  transition: all 500ms;
+}
+.item .category p {
+  opacity: 1;
+  height: inherit;
+}
+.item .category p.ng-hide {
+  opacity: 0;
+  height: 0;
+}
+.item .category.selected {
+  margin: 30px -15px;
+  border-radius: 2px;
+}
+.item .category.selected .expanded {
+  visibility: visible;
+}
+.item .category.selected .expanded,
+.item .category.selected .expanded > * {
+  max-height: 700px;
+  opacity: 1;
+}
+.item .category.selected .expanded .md-label {
+  border: hidden;
+}
+.item .category.selected h3 {
+  font-size: 1.8em;
+}
+.item .category .expanded {
+  visibility: hidden;
+}
+.item .category .expanded,
+.item .category .expanded > * {
+  max-height: 0;
+  opacity: 0;
+  transition: all 500ms;
+}
+.item .category .expanded .split {
+  padding: 10px;
+}

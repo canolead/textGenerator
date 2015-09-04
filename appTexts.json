@@ -1,0 +1,223 @@
+{
+	"appCategory":[
+		{
+			"category":"ゲーム系",
+			"types":["育成ゲーム","知育ゲーム","アクションゲーム","恋愛ゲーム","スポーツゲーム","RPG","クイズ","パズルゲーム","*シミュレーションゲーム","麻雀"]
+		},
+		{
+			"category":"便利系",
+			"types":["QRコードリーダー","バッテリー節約","家計簿","カレンダー","カーナビ","乗換案内","時刻表","メモ帳","ファイル管理","スケジュール管理","名刺管理","収支管理"]
+		},
+		{
+			"category":"天気・ニュース系",
+			"types":["天気予報","天気情報","ニュース","スポーツ情報","*情報","*検索","*ナビ","*まとめ"]
+		},
+		{
+			"category":"通話・メール・チャット系",
+			"types":["通話","メール","チャット","トーク","*掲示板"]
+		},
+		{
+			"category":"コミュニティ・SNS・マッチング系",
+			"types":["コミュニティ","SNS","マッチング","婚活"]
+		},
+		{
+			"category":"画像・動画・音楽系",
+			"types":["画像編集","○○画像まとめ","デコメ・スタンプ画像","動画編集","動画作成","動画再生","音楽再生","音楽ダウンロード","カメラ"]
+		},
+		{
+			"category":"SNS・マッチング系",
+			"types":["コミュニティ","SNS","マッチング","婚活"]
+		},
+		{
+			"category":"通販・ショッピング系",
+			"types":["通販","ショッピング","フリマ"]
+		},
+		{
+			"category":"マンガ、書籍系",
+			"types":["電子書籍","電子書籍ストア","漫画","マンガ・ノベル","読書","週刊誌"]
+		},
+		{
+			"category":"お小遣い、お金系",
+			"types":["お小遣い","懸賞","トレーディング"]
+		},
+		{
+			"category":"健康系",
+			"types":["健康管理","ダイエット"]
+		},
+		{
+			"category":"スポーツ系",
+			"types":["サッカー","野球","ゴルフ"]
+		},
+		{
+			"category":"学習、辞書系",
+			"types":["知育","勉強","英会話","*教育","*学習","*対策","*トレーニング"]
+		},
+		{
+			"category":"その他",
+			"types":["*説明書","*サポート","*シミュレーション"]
+		}
+	],
+	"appFeature":[
+		{"label":"便利", "labelForms":{"normal":"便利な", "period":"便利"}, "textList":[
+			{"normal":"毎日使える", "comma":"毎日使えて", "examples":[51,734]},
+			{"normal":"いつでも使える", "comma":"いつでも使えて", "examples":[648]},
+			{"normal":"全てが揃っている", "comma":"全てが揃っていて", "examples":[613]},
+			{"normal":"安心・安全な", "comma":"安心・安全で", "examples":[734]},
+			{"normal":"機能が豊富な", "comma":"機能が豊富で", "examples":[4394, 871]},
+			{"normal":"まとめて管理出来る", "comma":"まとめて管理出来て", "examples":[675, 18551]},
+			{"normal":"コンテンツが充実してる", "comma":"コンテンツが充実してて", "examples":[816,12987,867,11381]},
+			{"normal":"最速表示な", "comma":"最速表示で", "examples":[782,7250]},
+			{"normal":"高機能な", "comma":"高機能で", "examples":[613]},
+			{"normal":"快適な", "comma":"快適で", "examples":[1235]}
+		]},
+		{"label":"シンプル・簡単", "labelForms":{"normal":"シンプルな", "period":"簡単"}, "textList":[
+			{"normal":"簡単に操作出できる", "comma":"簡単に操作できて", "examples":[682,175,721,4395]},
+			{"normal":"ボタン一つでできる", "comma":"ボタン一つでできて", "examples":[598]},
+			{"normal":"タッチするだけの", "comma":"タッチするだけで", "examples":[705]},
+			{"normal":"誰でもできる", "comma":"誰でもできて", "examples":[2364,1818,1798]},
+			{"normal":"サクサク動く", "comma":"サクサク動いて", "examples":[598, 1419, 175]},
+			{"normal":"気軽に使える", "comma":"気軽に使えて", "examples":[1818]},
+			{"normal":"登録不要の", "comma":"登録不要で", "examples":[2528,6336,14909]},
+			{"normal":"短時間で手軽にできる", "comma":"短時間で手軽にできて", "examples":[2495]}
+		]},
+		{"label":"面白い", "labelForms":{"normal":"面白い", "period":"面白い"}, "textList":[
+			{"normal":"本格的な", "comma":"超本格的で", "examples":[770,15720,1818]},
+			{"normal":"リアルな", "comma":"超リアルで", "examples":[2340,6447,2327]},
+			{"normal":"圧倒的な臨場感のある", "comma":"圧倒的な臨場感があって", "examples":[2327]},
+			{"normal":"こだわりのある", "comma":"こだわりがあって", "examples":[2340]},
+			{"normal":"爽快な", "comma":"爽快で", "examples":[2364,2325]},
+			{"normal":"ど迫力な", "comma":"ど迫力で", "examples":[2364,12283,175]},
+			{"normal":"イラストが魅力的な", "comma":"イラストが魅力的で", "examples":[12283,2325]},
+			{"normal":"コンテンツが多彩な", "comma":"コンテンツが多彩で", "examples":[8988,11381]},
+			{"normal":"グラフィックが綺麗な", "comma":"グラフィックが綺麗で", "examples":[2325]},
+			{"normal":"熱い演出のある　", "comma":"熱い演出があって", "examples":[2327]}
+		]},
+		{"label":"かわいい", "labelForms":{"normal":"かわいい", "period":"かわいい"}, "textList":[
+			{"normal":"こだわりのある", "comma":"こだわりがあって", "examples":[2340]},
+			{"normal":"キャラが魅力的な", "comma":"キャラが魅力的で", "examples":[12283, 28268]},
+			{"normal":"イラストが魅力的な", "comma":"イラストが魅力的で", "examples":[12283,2325]},
+			{"normal":"グラフィックが綺麗な", "comma":"グラフィックが綺麗で", "examples":[2325]}
+		]},
+		{"label":"おトク", "labelForms":{"normal":"おトクな", "period":"おトク"}, "textList":[
+			{"normal":"サンプルを試し読みできる", "comma":"サンプルを試し読みできて", "examples":[867]},
+			{"normal":"ポイントがたまる", "comma":"ポイントがたまって", "examples":[63, 648, 1470, 10200]},
+			{"normal":"プレゼントがもらえる", "comma":"プレゼントがもらえて", "examples":[648, 10200]}
+		]}
+	],
+	"price":[
+		{"label":"無料", "textList":
+			{
+				"all":[],
+				"informal":[
+					{"text":"すべての機能が無料！","examples":[611,619]},
+					{"text":"もちろん完全無料！","examples":[608]}
+				],
+				"formal":[
+					{"text":"もちろん完全無料です！","examples":[608]},
+					{"text":"無料でお楽しみいただけます。","examples":[627]}
+				]
+			}
+		},
+		{"label":"一部有料", "textList":
+			{
+				"all":[],
+				"informal":[
+					{"text":"基本無料！","examples":[14909]}
+				],
+				"formal":[
+					{"text":"基本無料です！","examples":[14909]}
+				]
+			}
+		},
+		{"label":"有料", "textList":[]}
+	],
+	"targetUser":{
+		"userList":["男性","女性","主婦","サラリーマン","*ファン","*好き"],
+		"textList":{
+				"all":[
+					{"text":"<user>必見！","examples":[816,18268]},
+					{"text":"多くの<user>に好評！","examples":[]},
+					{"text":"<user>に大人気！","examples":[]}
+				],
+				"informal":[],
+				"formal":[]
+		}
+	},
+	"appAdjective":{
+		"all":[],
+		"informal":[
+			{"text":"究極の<apptype>アプリ。", "examples":[924]}, 
+			{"text":"新感覚<apptype>アプリ。", "examples":[827,6450,721]}
+		],
+		"formal":[
+			{"text":"究極の<apptype>です。", "examples":[924,2325]}, 
+			{"text":"新感覚<apptype>です。", "examples":[827,6450,721]},
+			{"text":"今人気上昇中の<apptype>です。", "examples":[827,6450,721]}
+		]
+	},
+	"appCopy":{
+		"default":{
+			"all":[],
+			"informal":[
+				{"text":"<apptype>アプリの決定版！", "examples":[611]},
+				{"text":"常識を塗り替える<apptype>アプリが登場！", "examples":[1798]},
+				{"text":"いままで見たことのない<apptype>アプリ！", "examples":[]},
+				{"text":"史上もっとも*な<apptype>アプリ！", "examples":[101]},
+				{"text":"日本最大級の<apptype>アプリ!", "examples":[648]}
+			],
+			"formal":[]
+		},
+		"all":{
+			"all":[
+				{"text":"*をもっと楽しく快適に。", "examples":[729]},
+				{"text":"通勤途中や待ち時間に！", "examples":[1474]},
+				{"text":"史上初、公式*アプリ登場！", "examples":[13407]},
+				{"text":"Google Play新着無料ランキング*位獲得！", "examples":[175]},
+				{"text":"*カテゴリでランキング*位獲得！", "examples":[1474]},
+				{"text":"あの実力派*もここに集結！", "examples":[]},
+				{"text":"カテゴリNo.1！", "examples":[598]}
+			],
+			"informal":[
+				{"text":"始めよう、*！", "examples":[17408]},
+				{"text":"*をゲットしよう！", "examples":[2495]}
+			],
+			"formal":[]
+		},
+		"games":{
+			"all":[
+				{"text":"あの○○が手軽に遊べるアプリになった！", "examples":[14881]},
+				{"text":"魅力的なキャラクター達が躍動する<apptype>アプリ。", "examples":[770]},
+				{"text":"圧倒的ボリューム！", "examples":[15720]},
+				{"text":"これぞ正統派<apptype>アプリ！", "examples":[15720]},
+				{"text":"あの人気キャラクターが登場！", "examples":[2215]},
+				{"text":"今すぐプレイ！", "examples":[773]},
+				{"text":"本当に面白い<apptype>アプリをあなたに！", "examples":[753]}
+			],
+			"informal":[
+				{"text":"トップを目指せ！", "examples":[14909]},
+				{"text":"熱いバトルを繰り広げよう！", "examples":[827]},
+				{"text":"最強のプレイヤーを目指そう！", "examples":[700]},
+				{"text":"クセになること間違いなし！！", "examples":[6433]}
+			],
+			"formal":[]
+		},
+		"information":{
+			"all":[{"text":"あらゆる<apptype>をお届け！", "examples":[1474]}],
+			"informal":[],
+			"formal":[{"text":"*情報を最速でお届けします！", "examples":[1412]}]
+		}
+	},
+	"download":{
+		"numList":[0,1000,5000,10000,50000,100000,500000,1000000],
+		"textList":{
+			"all":[
+				{"text":"<numList>ダウンロード突破！", "examples":[598]},
+				{"text":"おかげ様で累計<numList>DLを突破！", "examples":[796]},
+				{"text":"累計<numList>ダウンロード突破！", "examples":[613,1760]},
+				{"text":"【<numList>DL突破】", "examples":[175]}
+			],
+			"informal":[],
+			"formal":[]
+		}
+	}
+}

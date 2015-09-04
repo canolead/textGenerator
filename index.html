@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="ja" ng-app="StarterApp">
+  <head>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="bower_components/angular-material/angular-material.min.css">
+    <link rel="stylesheet" href="bower_components/angular-material/themes/cyan-theme.css">
+    <link rel="stylesheet" href="bower_components/angular-material/themes/yellow-theme.css">
+    <link rel="stylesheet" href="bower_components/angular-material/themes/lime-theme.css">
+    <link rel="stylesheet" href="bower_components/angular-material/themes/light-green-theme.css">
+    <link rel="stylesheet" href="bower_components/angular-material/themes/blue-theme.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">
+    <meta name="viewport" content="initial-scale=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <style>
+
+      body{
+        font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+      }
+
+      h1.docs-logotype{
+        margin: 10px 0 10px 0;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+
+      .relative {
+        position: relative;
+      }
+
+      .lime {
+        background-color: #CDDC39
+      }
+
+      .cyan {
+        background-color: #00BCD4
+      }
+
+      .white-bg {
+        background-color: #FFFFFF
+      } 
+
+      .light-green {
+        background-color:#8BC34A
+      }
+
+      .font-bold{
+        font-weight: bold
+      }
+
+      .md-toolbar-tools h1 {
+        font-size: inherit;
+        font-weight: inherit;
+        margin: inherit;
+      }
+      md-content.md-default-theme {
+        background-color: #F5F5F5;
+      }
+
+      md-list.side-bar-list {
+        background-color: #FFF;
+      }
+
+      .white-text {
+        color: #FFF;
+      }
+
+      section .question-toolbar{
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
+      }
+
+      .fadeAnim.ng-enter {
+        -webkit-animation: fadeInAnim 0.3s  ease-out; /* Safari 4+ */
+        -moz-animation:    fadeInAnim 0.3s  ease-out; /* Fx 5+ */
+        -o-animation:      fadeInAnim 0.3s  ease-out; /* Opera 12+ */
+        animation:         fadeInAnim 0.3s  ease-out; /* IE 10+, Fx 29+ */
+
+      }
+
+      @-webkit-keyframes fadeInAnim {
+        0%   { 
+          opacity: 0; 
+          -webkit-transform: translate(50px,0);
+        }
+        
+        100% { 
+          opacity: 1; 
+          -webkit-transform: translate(0,0);
+        }
+      }
+      @-moz-keyframes fadeInAnim {
+        0%   { 
+          opacity: 0; 
+          -moz-transform: translate(50px,0);
+        }
+       
+        100% { 
+          opacity: 1; 
+          -moz-transform: translate(0,0);
+        }
+      }
+      @-o-keyframes fadeInAnim {
+        0%   { 
+          opacity: 0;
+          -o-transform: translate(50px,0);
+        }
+        
+        100% { 
+          opacity: 1; 
+          -o-transform: translate(0,0);
+        }
+      }
+      @keyframes fadeInAnim {
+        0%   { 
+          opacity: 0;
+          transform: translate(50px,0);
+        }
+       
+        100% { 
+          opacity: 1; 
+          transform: translate(0,0);
+        }
+      }
+
+      .fadeAnim.ng-leave {
+         display:none;
+      }
+      .fadeAnim.ng-leave.ng-leave-active {
+       
+      }
+
+    </style>
+
+  </head>
+  <body layout="row" ng-controller="AppCtrl">
+    <md-sidenav layout="column"  class="md-sidenav-left" md-component-id="left" md-theme="lime" md-is-locked-open="$mdMedia('gt-md')">
+      
+      <md-toolbar class="md-whiteframe-z1" layout="column" flex="100" layout-align="center center">
+          <img src="img/logo.png" />
+          <h1 class="docs-logotype md-heading white-text">Catch</h1>
+      </md-toolbar>
+      <md-list class="side-bar-list" flex>
+        <md-list-item md-theme="cyan">
+          <md-button ui-sref="home" class="md-raised md-primary">Home</md-button>
+        </md-list-item>
+        <md-list-item>
+            <md-button ui-sref="q1" class="md-raised md-primary" md-theme="cyan">Start</md-button>
+        </md-list-item>
+        <md-list-item>
+         name
+        </md-list-item>
+      </md-list>
+    </md-sidenav>
+    <div layout="column" flex>
+      <md-toolbar layout="row" class="md-whiteframe-z2" md-theme="cyan">
+        <div class="md-toolbar-tools">
+          <md-button ng-click="toggleSidenav('left')" class="md-icon-button">
+            <md-icon aria-label="Menu" md-svg-icon="https://s3-us-west-2.amazonaws.com/s.cdpn.io/68133/menu.svg"></md-icon>
+          </md-button>
+          <h1>キャッチコピー自動生成ツール</h1>
+        </div>
+      </md-toolbar>
+        <md-content layout="column" layout-align="center center" flex class="md-padding">
+          <div ui-view layout-fill>
+         
+          </div>
+        </md-content>
+  
+    </div>
+
+    <!-- Angular Material Dependencies -->
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-aria/angular-aria.min.js"></script>
+    <script src="bower_components/angular-material/angular-material.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script>
+
+      var appName = 'StarterApp';
+
+      var ANIM_DURATION = 150;
+
+      var app = angular.module(appName, ['ngMaterial', 'ngAnimate', 'ui.router']);
+      var appData = {};
+
+var response = {};
+
+      app.config(function ($stateProvider, $urlRouterProvider, $mdIconProvider) {
+
+       $stateProvider
+          .state('questions', {
+            url: '/',
+            templateUrl: 'questions.html', 
+          })
+          .state('q1', {
+            url: '/q1',
+            parent: 'questions',
+            templateUrl: 'questions.q1.html'
+          })
+          .state('q2', { 
+            url: '/q2',
+            parent: 'questions',
+            templateUrl: 'questions.q2.html'
+          })
+          .state('q3', {
+            url: '/q3',
+            parent: 'questions',
+            templateUrl: 'questions.q3.html'
+          })
+          .state('q4', {
+            url: '/q4',
+            parent: 'questions',
+            templateUrl: 'questions.q4.html'
+          })
+          .state('answer', {
+            url: '/answer',
+            parent: 'questions',
+            templateUrl: 'questions.answer.html'
+          })
+          $urlRouterProvider.otherwise("/");
+
+          
+          $mdIconProvider.icon('star', 'bower_components/material-design-icons/action/svg/production/ic_supervisor_account_48px.svg', 96);
+      });
+
+      app.factory('questionsService',function($rootScope,$timeout){
+
+        var questionsService = {};
+        questionsService.data = {};
+
+        questionsService.broadcastQuestionData = function(evevtName){
+          $timeout(function(){
+             $rootScope.$broadcast(evevtName);
+          },100);
+        };
+        questionsService.setQuestionData = function(data){
+          this.data = data;
+        };
+
+        questionsService.submitPartialQuestionData = function(evevtName, data){
+          this.setQuestionData(data);
+          this.broadcastQuestionData(evevtName);
+        };
+
+        questionsService.getQuestionData = function(){
+          return this.data;
+        };
+  
+        return questionsService;
+
+      });
+
+      app.controller('AppCtrl', ['$scope', '$mdSidenav', '$state', function($scope, $mdSidenav, $state){
+        $scope.toggleSidenav = function(menuId) {
+          $mdSidenav(menuId).toggle();
+        };
+       
+        $scope.appData = {};
+        $.getJSON( "appTexts.json", function( data ) {
+          appData = data;
+        });
+
+//THIS IS FOR TESTING!!!!
+        $scope.response = {};
+        $.getJSON( "response.json", function( res ) {
+          response = res;
+        });
+
+      }]);
+
+      app.controller('questionCtrl', function($scope, $sce, $state, $http, questionsService) {
+        $scope.appQuestionData = {};
+
+        $scope.$on('q1_data',function(){
+          $scope.appQuestionData.q1 = questionsService.getQuestionData();
+        });
+
+        $scope.$on('q2_data',function(){
+          $scope.appQuestionData.q2 = questionsService.getQuestionData();
+        });
+
+        $scope.$on('q3_data',function(){
+          $scope.appQuestionData.q3 = questionsService.getQuestionData();
+        });
+
+        $scope.$on('q4_data',function(){
+          var q4Array = [];
+          q4Answer = questionsService.getQuestionData();
+          for(i in q4Answer["selected"]){
+            if(q4Answer["selected"][i]){
+              q4Array.push(i);
+            }
+          }
+
+          $scope.appQuestionData.q4 = q4Array;
+          $scope.submitData(); 
+        });
+
+        $scope.submitData = function(){
+
+          $http.post('/generateAppCopyText.py', {data: $scope.appQuestionData}).
+          then(function(response) {
+            if(response.ok==1){
+
+            }
+          }, function(response) {
+
+          });
+        }
+
+      });
+
+      app.controller('q1Ctrl', function($scope, $sce, $state, questionsService) {
+        
+        $scope.appCategory = appData.appCategory;
+        $scope.data = {};
+
+        $scope.goToNext = function () {
+
+          questionsService.submitPartialQuestionData("q1_data", $scope.data);
+
+          setTimeout(function(){
+            $(".section_q1").animate({
+              opacity: 0
+            }, ANIM_DURATION, function(){
+              $state.go('q2');
+            }); 
+          }, 500);
+        };
+
+        $scope.selectedAppTypeIndex = undefined;
+        $scope.selectAppTypeIndex = function (index) {
+          if ($scope.selectedAppTypeIndex !== index) {
+            $scope.selectedAppTypeIndex = index;
+            $scope.data.appTypeIndex = ""+index;
+          }
+          else {
+            $scope.selectedAppTypeIndex = undefined;
+          }
+        };
+      });
+
+      app.controller('q2Ctrl', function($scope, $sce, $state, questionsService) {
+        $scope.appFeature = appData.appFeature;
+        $scope.data = {};
+
+        $scope.selectAppFeatureIndex = undefined;
+        $scope.selectAppFeatureIndex = function (index) {
+          if ($scope.selectAppFeatureIndex !== index) {
+            $scope.selectAppFeatureIndex = index;
+            $scope.data.appFeatureIndex = ""+index;
+          }
+          else {
+            $scope.selectAppFeatureIndex = undefined;
+          }
+        };
+
+        $scope.goToNext = function () {
+
+          questionsService.submitPartialQuestionData("q2_data",$scope.data);
+
+          $(".section_q2").animate({
+            opacity: 0
+          }, ANIM_DURATION, function(){
+            $state.go('q3');
+          }); 
+        };
+
+      });
+
+      app.controller('q3Ctrl', function($scope, $sce, $state, questionsService) {
+        $scope.price = appData.price;
+        $scope.targetUser = appData.targetUser;
+        $scope.download = appData.download;
+        $scope.data = {};
+
+        $scope.goToNext = function () {
+
+          questionsService.submitPartialQuestionData("q3_data",$scope.data);
+
+          $(".section_q3").animate({
+            opacity: 0
+          }, ANIM_DURATION, function(){
+            $state.go('q4');
+          }); 
+        };
+
+      });
+
+      app.controller('q4Ctrl', function($scope, $sce, $state, questionsService) {
+      
+        var appType = "";
+        $scope.appCopy = []; 
+        for(var list in appData.appCopy["all"]){
+          for(var index in appData.appCopy["all"][list]){
+            $scope.appCopy.push({"type": ["all",list] ,"text": appData.appCopy["all"][list][index]["text"]});
+          }
+        }
+
+        switch(appType){
+          case "games":
+            for(var list in appData.appCopy["games"]){
+              for(var index in appData.appCopy["games"][list]){
+                $scope.appCopy.push({"type": ["games",list] ,"text": appData.appCopy["games"][list][index]["text"]});
+              }
+            }
+            break;
+          case "information":
+            for(var list in appData.appCopy["information"]){
+              for(var index in appData.appCopy["information"][list]){
+                $scope.appCopy.push({"text": appData.appCopy["information"][list][index]["text"], "type": ["information",list]});
+              }
+            }
+            break;
+          default:
+            break;  
+        }
+
+        $scope.data = {
+          selected: []
+        };
+        $scope.goToNext = function () {
+
+          questionsService.submitPartialQuestionData("q4_data",$scope.data);
+
+          $(".section_q4").animate({
+            opacity: 0
+          }, ANIM_DURATION, function(){
+         //   $state.go('answer');
+          }); 
+        }
+      });
+
+      app.controller('answerCtrl', function($scope, $sce, $state, questionsService) {
+        $scope.response = response;
+        //$scope.response = [{"text":1}, {"text":2}, {"text":3}];
+
+      });
+
+    </script>
+        
+    <script type="text/ng-template" id="questions.html">
+      <section ng-controller="questionCtrl">
+        <md-content layout="column" flex layout-fill class="md-padding">
+          <div ui-view class="fadeAnim" flex layout-fill>
+
+              <div layout="row" layout-align="space-around center" flex>
+                <div class="md-padding">
+                  <a ui-sref="q1">                
+                    <md-card md-ink-ripple='#333' class="relative md-whiteframe-z2">
+                      <div class="light-green" layout="column" layout-align="center center" flex>
+                        <i class="md-padding material-icons md-48" ng-style="{color: 'white', 'font-size':'130px', height:'130px'}">looks_one</i>
+                      </div>
+                      <md-card-content layout="column" layout-align="center center">
+                        <h2>簡単ワンクリック生成</h2>
+                        <p>オススメのキャッチコピーがワンクリックですぐに見れます。</p>
+                      </md-card-content>
+                    </md-card>
+                  </a>
+                </div>
+                <div class="md-padding">
+                  <a ui-sref="q1">
+                    <md-card md-ink-ripple='#333' class="relative md-whiteframe-z2">
+                      <div class="light-green" layout="column" layout-align="center center" flex>
+                        <i class="md-padding material-icons md-48" ng-style="{color: 'white', 'font-size':'130px', height:'130px'}" md-theme="lime" >question_answer</i>
+                      </div>
+                      <md-card-content layout="column" layout-align="center center">
+                        <h2>インタラクティブ生成</h2>
+                        <p>質問に答えると正確なするキャッチコピーが見れます。</p>
+                      </md-card-content>
+                    </md-card>
+                  </a>
+                </div>
+              </div>                
+                
+              </div>
+          </div>
+        </md-content>
+      </section>
+    </script>
+
+    <script type="text/ng-template" id="questions.q1.html">
+      <section class="section_q1" ng-controller="q1Ctrl">
+        <div layout="row" layout-align="center">
+          <div flex="60" class="md-whiteframe-z2">     
+            <md-toolbar class="question-toolbar" md-theme="light-green">
+              <div class="md-toolbar-tools">
+                <h3 class="white-text">Q1, アプリのタイプを選択して下さい。</h3>
+              </div>
+            </md-toolbar>
+            <md-content class="item-list" layout="row" layout-align="center" layout-fill>
+              <div flex class="content">
+                <md-item ng-repeat="item in appCategory track by $index" class="item" ng-class="{ 'selected-item': $index == selectedAppTypeIndex}">
+                  <md-item-content class="category tile md-whiteframe-z1"
+                                   ng-class="{ 'selected md-whiteframe-z2': $index == selectedAppTypeIndex}"
+                                   layout="column">
+            
+                    <md-button  class="md-primary md-raised folded md-button-toggle" md-theme="lime" ng-click="selectAppTypeIndex($index); toggle()" >
+                      <div flex layout="row">
+                        <span class="font-bold">{{ item.category }}</span>
+                        <span flex></span>
+                  
+                        <span aria-hidden="true" class="md-toggle-icon" ng-class="{'toggled' : isOpen()}">
+                          <md-icon md-svg-src="md-toggle-arrow"></md-icon>
+                        </span>
+                      </div>
+                    </md-button>
+                     
+                    <md-divider layout-fill ng-show="$index == selectedAppTypeIndex"></md-divider>
+                    <div layout="column" layout-fill class="expanded">
+                      <md-radio-group ng-model="data.appType">
+                        <div md-ink-ripple='#333' ng-repeat="buttonItem in item.types track by $index" class="relative">
+                          <md-radio-button value="{{$index}}" class="md-primary" md-theme="cyan">{{buttonItem}} 
+                          </md-radio-button>
+                        </div>
+                      </md-radio-group>
+                      <md-button ng-click="goToNext()" class="md-primary md-raised" md-theme="cyan">次へ</md-button>
+                    </div>
+                  </md-item-content>
+                  <md-divider class="divider-inset" ng-if="!$last"></md-divider>
+                </md-item>
+              </div>
+            </md-content>
+          </div>
+        </div>
+      </section>
+    </script>
+    <script type="text/ng-template" id="questions.q2.html" >
+      <section class="section_q2" ng-controller="q2Ctrl">
+        <div layout="row" layout-align="center">
+          <div flex="50" class="md-whiteframe-z2"> 
+            <md-toolbar class="question-toolbar" md-theme="light-green">
+              <div class="md-toolbar-tools">
+                <h3 class="white-text">Q2, あなたのアプリの特徴は？</h3>
+              </div>
+            </md-toolbar>
+            <md-content class="item-list" layout="row" flex layout-align="center" layout-fill>
+              <div flex class="content" ui-view>
+                <md-item ng-repeat="item in appFeature track by $index" class="item" ng-class="{ 'selected-item': $index == selectAppFeatureIndex}">
+                  <md-item-content class="category tile md-whiteframe-z1"
+                                   ng-class="{ 'selected md-whiteframe-z2': $index == selectAppFeatureIndex}"
+                                   layout="column">
+            
+                    <md-button  class="md-primary md-raised folded md-button-toggle" md-theme="lime" ng-click="selectAppFeatureIndex($index)">
+                      <div flex layout="row">
+                        <span class="font-bold">{{ item.label }}</span>
+                          <span flex></span>
+                          <span aria-hidden="true" class="md-toggle-icon" ng-class="{'toggled' : isOpen()}">
+                          <md-icon md-svg-src="md-toggle-arrow"></md-icon>
+                        </span>
+                      </div>
+                    </md-button>
+                      
+                    <md-divider layout-fill ng-show="$index == selectAppFeatureIndex"></md-divider>
+                    <div layout="column" layout-fill class="expanded">
+                      <md-radio-group ng-model="data.appFeatureDetail">
+                        <md-radio-button value="{{$index}}" ng-repeat="buttonItem in item.textList track by $index" class="md-primary">{{buttonItem.normal}}</md-radio-button>
+                      </md-radio-group>
+                      <md-button ng-click="goToNext()" class="md-primary md-raised" md-theme="cyan">次へ</md-button>
+                    </div>
+                  </md-item-content>
+                  <md-divider class="divider-inset" ng-if="!$last"></md-divider>
+                </md-item>
+              </div>
+            </md-content>
+          </div>
+        </div>
+      </section>
+    </script>
+    <script type="text/ng-template" id="questions.q3.html">
+      <section ng-controller="q3Ctrl" class="section_q3">  
+        <div layout="row" layout-wrap layout-align="center">
+          <div flex="60">     
+            <md-toolbar class="question-toolbar md-primary" md-theme="light-green">
+              <div class="md-toolbar-tools">
+                <h3 class="white-text">Q3.1, あなたのアプリの価格は？</h3>
+              </div>
+            </md-toolbar>
+            <md-content class="item-list md-whiteframe-z1 md-padding md-default-theme white-bg" layout="column" flex layout-align="start" layout-fill>
+              <md-radio-group layout="row" layout-wrap ng-model="data.price">
+                <div md-ink-ripple='#333' class="relative" ng-repeat="buttonItem in price track by $index" flex="50">
+                  <md-radio-button value="{{$index}}" flex="40" class="md-primary">{{buttonItem.label}}</md-radio-button>
+                </div>
+              </md-radio-group>
+            </md-content>
+          
+            <md-toolbar class="question-toolbar md-primary" md-theme="light-green">
+              <div class="md-toolbar-tools">
+                <h3 class="white-text">Q3.2, あなたのアプリのターゲット層は？</h3>
+              </div>
+            </md-toolbar>
+            <md-content class="item-list md-whiteframe-z1 md-padding md-default-theme white-bg" layout="column" flex layout-align="start" layout-fill>
+              <md-radio-group layout="row" layout-wrap ng-model="data.target">
+                <div md-ink-ripple='#333' class="relative" ng-repeat="buttonItem in targetUser.userList track by $index" flex="50">
+                  <md-radio-button value="{{$index}}" flex="40" class="md-primary">{{buttonItem}}</md-radio-button>
+                </div>
+              </md-radio-group>
+            </md-content>
+         
+            <md-toolbar class="question-toolbar md-primary" md-theme="light-green">
+              <div class="md-toolbar-tools">
+                <h3 class="white-text">Q3.3, あなたのアプリのダウンロード数は？</h3>
+              </div>
+            </md-toolbar>
+            <md-content class="item-list md-whiteframe-z1 md-padding md-default-theme white-bg" layout="column" flex layout-align="start" layout-fill>
+              <md-radio-group layout="row" layout-wrap ng-model="data.download">
+                <div md-ink-ripple='#333' class="relative" ng-repeat="buttonItem in download.numList track by $index" flex="50">
+                  <md-radio-button value="{{$index}}" class="md-primary">{{buttonItem}}</md-radio-button>
+                </div>
+              </md-radio-group>
+            </md-content>
+            <div layout="row" layout-wrap layout-align="center" class="md-padding">
+              <md-button ng-click="goToNext()" class="md-primary md-raised" md-theme="cyan" flex="50">次へ</md-button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </script>
+    <script type="text/ng-template" id="questions.q4.html">
+      <section ng-controller="q4Ctrl" class="section_q4">
+        <div layout="row" layout-wrap layout-align="center">
+          <div flex="100">
+            <md-toolbar class="question-toolbar md-primary md-default-theme" md-theme="light-green">
+              <div class="md-toolbar-tools">
+                <h3 class="white-text">Q4, 好きなキャッチコピーを３つ選んで下さい。</h3>
+              </div>
+            </md-toolbar>
+            <md-content class="item-list md-whiteframe-z1 md-padding md-default-theme white-bg" layout="column" flex layout-align="start" layout-fill>
+              <div flex md-ink-ripple='#333' ng-repeat="(cbidx, buttonItem) in appCopy track by $index" class="relative">
+                <md-checkbox  value="{{$index}}" ng-model="data.selected[cbidx]"  class="md-primary" md-theme="cyan">{{buttonItem.text}}</md-checkbox>
+              </div>
+            </md-content>
+            <div layout="row" layout-wrap layout-align="center" class="md-padding">
+              <md-button ng-click="goToNext()" class="md-primary md-raised" flex="50" md-theme="cyan">次へ</md-button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </script>
+    <script type="text/ng-template" id="questions.answer.html">
+      <section ng-controller="answerCtrl" class="section_answer">
+        <div layout="row" layout-wrap layout-align="center">
+          <div flex="100" ng-repeat="item in response track by $index">
+            <md-toolbar class="md-primary md-default-theme">
+              <div class="md-toolbar-tools">
+                <h4>{{item.text}}</h4>
+              </div>
+            </md-toolbar>
+            <md-content class="item-list md-whiteframe-z1 md-padding md-default-theme" layout="column" flex layout-align="start" layout-fill>
+              <div layout="row" layout-wrap layout-align="start">
+                <md-list-item flex="33" flex-sm="100" class="md-2-line" ng-repeat="listItem in item.examples track by $index">
+                  {{listItem.text}}
+                </md-list-item>
+              </div>
+            </md-content>
+            
+          </div>
+        </div>
+      </section>
+    </script>
+  </body>
+</html>
