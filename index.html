@@ -52,7 +52,7 @@
       }
 
       .example-button {
-        background-color: #CDDC39
+        background-color: #F9F9F9
       }
 
       .md-toolbar-tools h1 {
@@ -77,7 +77,11 @@
       }
 
       .answer-list {
-        margin: 10px 0 10px 0;
+        margin: 10px;
+      }
+
+      .answer-list-item {
+        margin: 10px;
       }
 
       section .question-toolbar{
@@ -499,9 +503,9 @@ var response = {};
         }
       });
 
-      app.controller('answerCtrl', function($scope, $sce, $state, questionsService) {
+      app.controller('answerCtrl', function($scope, $mdDialog, $state, questionsService) {
         $scope.response = response;
-        //$scope.response = [{"text":1}, {"text":2}, {"text":3}];
+       
         $scope.selectedPhraseIndex = undefined;
         $scope.selectPhraseIndex = function (index) {
           if ($scope.selectedPhraseIndex !== index) {
@@ -511,7 +515,52 @@ var response = {};
             $scope.selectedPhraseIndex = undefined;
           }
         };
+
+        $scope.status = '';
+        $scope.displayExample = function(ev) {
+           
+          var obj = $(ev.target);
+          if (obj[0].tagName.toLowerCase()=="span") {
+            obj = $(obj).parent();
+          }
+     
+          var appTitleId = obj.data("appTitle");
+          var appDescId = obj.data("appDesc"); 
+        
+          var keyPhrase = $scope.response[appTitleId].examples[appDescId].text;
+          var appTitle = $scope.response[appTitleId].examples[appDescId].appTitle;
+          var appDesc = $scope.response[appTitleId].examples[appDescId].description;
+
+          $mdDialog.show({
+            controller: DialogController,
+            template: '<md-dialog>' +
+                      '   <md-toolbar layout-align="center center" md-theme="cyan">「'+keyPhrase+'」の例文</md-toolbar>' +
+                      '   <md-content class="md-padding"><h3>'+appDesc+'</h3><span>'+appTitle+'</span></md-content>' +
+                      '   <div class="md-actions">' +
+                      '     <md-button ng-click="hide()">' +
+                      '       閉じる' +
+                      '     </md-button>' +
+                      '   </div>' +
+                      '</md-dialog>',
+            parent: angular.element(document.body),
+            clickOutsideToClose:true
+          });
+        
+        };
+
       });
+
+      function DialogController($scope, $mdDialog) {
+        $scope.hide = function() {
+          $mdDialog.hide();
+        };
+        $scope.cancel = function() {
+          $mdDialog.cancel();
+        };
+        $scope.answer = function(answer) {
+          $mdDialog.hide(answer);
+        };
+      }
 
     </script>
         
@@ -793,43 +842,28 @@ var response = {};
     </script>
     <script type="text/ng-template" id="questions.answer.html">
       <section ng-controller="answerCtrl" class="section_answer">
-        <div layout="row" layout-wrap layout-align="center center">
-          <div flex="100" ng-repeat="item in response track by $index" class="answer-list">
-  
-            <md-card layout="column" flex layout-fill>
+        <div layout="row" layout-wrap layout-align="center center" class="light-green  md-whiteframe-z1">
 
-              <div layout="column" layout-align="center center" class="light-green">
-                <div>
-                  <h2 class="white-text md-padding">{{item.text}}</h2>
-                <div>
-                <md-card-content layout="column" layout-align="center center">
-                  <md-list class="white-bg" layout-fill>
-                    <md-list-item flex-sm="100" ng-repeat="listItem in item.examples track by $index" layout="column">
-                      <div layout="row" layout-align="space-around center" class="md-padding" layout-fill>
-                        <div layout="row" flex="70" layout-align="start center"> 
-                          <i ng-style="{color: 'green', 'font-size':'31px', height:'31px'}" class="material-icons">check</i>
-                          <h3>
-                            {{listItem.text}}
-                          </h3>
-                        </div flex="30">
-                        <div>
-                          <md-button class="md-primary example-button" ng-click="selectPhraseIndex($index)"  md-theme="cyan">
-                            <span class="black-text">例文</span>
-                          </md-button>
-                        </div>
-                      </div>
-                      <div ng-show="$index == selectedPhraseIndex" class="md-padding">
-                        <div class="md-whiteframe-z1 md-padding">
-                          <div class="font-bold">{{listItem.appTitle}}</div>
-                          <div>{{listItem.description}}</div>
-                        </div>
-                      </div>
-                    </md-list-item>
-                  </md-list>
-                </md-card-content>
+          <md-list layout-fill class="white-bg answer-list md-whiteframe-z2">
+            <md-list-item flex-sm="100" ng-repeat="(key, item) in response track by $index" layout="column" layout-align="start center" class="answer-list-item" >
+              <div layout="row" layout-align="start center">
+                <i ng-style="{'margin': '5px', color: 'green', 'font-size':'24px', height:'24px'}" class="material-icons">check</i>
+                <h4 style="margin: 0">{{item.text}}</h4>
               </div>
-            </md-card>
-          </div>
+              <ul layout-fill style="list-style:none; margin: 0; padding: 0">
+                <li ng-repeat="listItem in item.examples track by $index" style="float:left;  margin:0; padding:0" layout="row">
+                  <div layout="row">
+                    <div layout="row" layout-align="start center"> 
+                      <md-button class="md-primary example-button" ng-click="displayExample($event)" md-theme="cyan" data-app-title="{{key}}" data-app-desc="{{$index}}">
+                        <span class="black-text">{{listItem.text}}</span>
+                      </md-button>
+               
+                    </div>
+                  </div>
+                </li>
+              </ul>   
+            </md-list-item>
+          </md-list>
         </div>
       </section>
     </script>
