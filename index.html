@@ -51,6 +51,10 @@
         font-weight: bold
       }
 
+      .example-button {
+        background-color: #CDDC39
+      }
+
       .md-toolbar-tools h1 {
         font-size: inherit;
         font-weight: inherit;
@@ -66,6 +70,14 @@
 
       .white-text {
         color: #FFF;
+      }
+
+     .black-text {
+        color: #333;
+      }
+
+      .answer-list {
+        margin: 10px 0 10px 0;
       }
 
       section .question-toolbar{
@@ -139,32 +151,41 @@
   <body layout="row" ng-controller="AppCtrl">
     <md-sidenav layout="column"  class="md-sidenav-left" md-component-id="left" md-theme="lime" md-is-locked-open="$mdMedia('gt-md')">
       
-      <md-toolbar class="md-whiteframe-z1" layout="column" flex="100" layout-align="center center">
-          <img src="img/logo.png" />
-          <h1 class="docs-logotype md-heading white-text">Catch</h1>
+      <md-toolbar class="md-whiteframe-z1">
+        <a ui-sref="questions">
+          <div layout="column" flex="100" layout-align="center center">
+            <img src="img/logo.png" />
+            <h5 class="white-text" style="margin: 0">キャッチコピー自動生成ツール</h5>
+            <h1 class="docs-logotype md-heading white-text">CopAI（仮）</h1>
+          </div>
+        </a>
       </md-toolbar>
       <md-list class="side-bar-list" flex>
-        <md-list-item md-theme="cyan">
-          <md-button ui-sref="home" class="md-raised md-primary">Home</md-button>
+        <md-list-item layout-fill md-theme="lime" ng-click="changeCurrentState('questions'); toggleSidenav('left')">
+          {{stateToText["questions"]}}
         </md-list-item>
-        <md-list-item>
-            <md-button ui-sref="q1" class="md-raised md-primary" md-theme="cyan">Start</md-button>
+        <md-list-item layout-fill md-theme="lime" ng-click="changeCurrentState('copai'); toggleSidenav('left')">
+          {{stateToText["copai"]}}
         </md-list-item>
-        <md-list-item>
-         name
+        <md-list-item layout-fill md-theme="lime" ng-click="changeCurrentState('aboutus'); toggleSidenav('left')">
+          {{stateToText["aboutus"]}}
+        </md-list-item>
+        <md-list-item layout-fill md-theme="lime" ng-click="changeCurrentState('questions'); toggleSidenav('left')">
+          利用規約
         </md-list-item>
       </md-list>
     </md-sidenav>
     <div layout="column" flex>
       <md-toolbar layout="row" class="md-whiteframe-z2" md-theme="cyan">
         <div class="md-toolbar-tools">
-          <md-button ng-click="toggleSidenav('left')" class="md-icon-button">
+          <md-button ng-click="toggleSidenav('left')" class="md-icon-button" hide-gt-md>
             <md-icon aria-label="Menu" md-svg-icon="https://s3-us-west-2.amazonaws.com/s.cdpn.io/68133/menu.svg"></md-icon>
           </md-button>
-          <h1>キャッチコピー自動生成ツール</h1>
+          <h1> {{stateToText[currentStateName]}}</h1>
         </div>
       </md-toolbar>
         <md-content layout="column" layout-align="center center" flex class="md-padding">
+          <a id="top"></a>     
           <div ui-view layout-fill>
          
           </div>
@@ -190,7 +211,7 @@
 
 var response = {};
 
-      app.config(function ($stateProvider, $urlRouterProvider, $mdIconProvider) {
+      app.config(function ($stateProvider, $urlRouterProvider, $mdIconProvider, $mdThemingProvider) {
 
        $stateProvider
           .state('questions', {
@@ -217,12 +238,32 @@ var response = {};
             parent: 'questions',
             templateUrl: 'questions.q4.html'
           })
+          .state('copai', {
+            url: '/copai',
+            templateUrl: 'copai.html'
+          })
+          .state('aboutus', {
+            url: '/aboutus',
+            templateUrl: 'aboutus.html'
+          })
           .state('answer', {
             url: '/answer',
             parent: 'questions',
             templateUrl: 'questions.answer.html'
           })
           $urlRouterProvider.otherwise("/");
+
+          $mdThemingProvider.theme('cyan')
+              .primaryPalette('cyan')
+              .accentPalette('yellow');
+
+          $mdThemingProvider.theme('lime')
+              .primaryPalette('lime')
+              .accentPalette('yellow');
+
+          $mdThemingProvider.theme('light-green')
+              .primaryPalette('light-green')
+              .accentPalette('yellow');
 
           
           $mdIconProvider.icon('star', 'bower_components/material-design-icons/action/svg/production/ic_supervisor_account_48px.svg', 96);
@@ -255,7 +296,20 @@ var response = {};
 
       });
 
-      app.controller('AppCtrl', ['$scope', '$mdSidenav', '$state', function($scope, $mdSidenav, $state){
+      app.controller('AppCtrl', ['$rootScope', '$scope', '$mdSidenav', '$state', '$anchorScroll', '$location', function($rootScope, $scope, $mdSidenav, $state, $anchorScroll, $location){
+  
+        $scope.currentStateName = "questions";
+        $scope.stateToText = {
+          "questions": "キャッチコピーを作る",
+          "copai": "CopAIとは？",
+          "aboutus": "About us"
+        }
+
+        $scope.changeCurrentState = function(stateName){
+          $scope.currentStateName = stateName;
+          $state.go(stateName);
+        }
+
         $scope.toggleSidenav = function(menuId) {
           $mdSidenav(menuId).toggle();
         };
@@ -265,10 +319,19 @@ var response = {};
           appData = data;
         });
 
+        $scope.gotoTop = function() {
+          $location.hash('top');
+          $anchorScroll();
+        };
+
 //THIS IS FOR TESTING!!!!
         $scope.response = {};
         $.getJSON( "response.json", function( res ) {
           response = res;
+        });
+
+        $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
+          $scope.gotoTop();
         });
 
       }]);
@@ -439,7 +502,15 @@ var response = {};
       app.controller('answerCtrl', function($scope, $sce, $state, questionsService) {
         $scope.response = response;
         //$scope.response = [{"text":1}, {"text":2}, {"text":3}];
-
+        $scope.selectedPhraseIndex = undefined;
+        $scope.selectPhraseIndex = function (index) {
+          if ($scope.selectedPhraseIndex !== index) {
+            $scope.selectedPhraseIndex = index;
+          }
+          else {
+            $scope.selectedPhraseIndex = undefined;
+          }
+        };
       });
 
     </script>
@@ -448,46 +519,124 @@ var response = {};
       <section ng-controller="questionCtrl">
         <md-content layout="column" flex layout-fill class="md-padding">
           <div ui-view class="fadeAnim" flex layout-fill>
-
-              <div layout="row" layout-align="space-around center" flex>
-                <div class="md-padding">
-                  <a ui-sref="q1">                
-                    <md-card md-ink-ripple='#333' class="relative md-whiteframe-z2">
-                      <div class="light-green" layout="column" layout-align="center center" flex>
-                        <i class="md-padding material-icons md-48" ng-style="{color: 'white', 'font-size':'130px', height:'130px'}">looks_one</i>
-                      </div>
-                      <md-card-content layout="column" layout-align="center center">
-                        <h2>簡単ワンクリック生成</h2>
-                        <p>オススメのキャッチコピーがワンクリックですぐに見れます。</p>
-                      </md-card-content>
-                    </md-card>
-                  </a>
-                </div>
-                <div class="md-padding">
-                  <a ui-sref="q1">
-                    <md-card md-ink-ripple='#333' class="relative md-whiteframe-z2">
-                      <div class="light-green" layout="column" layout-align="center center" flex>
-                        <i class="md-padding material-icons md-48" ng-style="{color: 'white', 'font-size':'130px', height:'130px'}" md-theme="lime" >question_answer</i>
-                      </div>
-                      <md-card-content layout="column" layout-align="center center">
-                        <h2>インタラクティブ生成</h2>
-                        <p>質問に答えると正確なするキャッチコピーが見れます。</p>
-                      </md-card-content>
-                    </md-card>
-                  </a>
-                </div>
-              </div>                
-                
+            <div layout="row" layout-sm="column" layout-align="space-around center" flex>
+              <div class="md-padding">
+                <a ui-sref="answer">                
+                  <md-card md-ink-ripple='#333' class="relative md-whiteframe-z2">
+                    <div class="light-green" layout="column" layout-align="center center" >
+                      <i class="md-padding material-icons md-48" ng-style="{color: 'white', 'font-size':'130px', height:'130px'}">looks_one</i>
+                    </div>
+                    <md-card-content layout="column" layout-align="center center">
+                      <h2>簡単ワンクリック作成</h2>
+                      <p>オススメのキャッチコピーがワンクリックですぐに作れます。</p>
+                    </md-card-content>
+                  </md-card>
+                </a>
               </div>
+              <div class="md-padding">
+                <a ui-sref="q1">
+                  <md-card md-ink-ripple='#333' class="relative md-whiteframe-z2">
+                    <div class="light-green" layout="column" layout-align="center center">
+                      <i class="md-padding material-icons md-48" ng-style="{color: 'white', 'font-size':'130px', height:'130px'}" md-theme="lime" >question_answer</i>
+                    </div>
+                    <md-card-content layout="column" layout-align="center center">
+                      <h2>インタラクティブ作成</h2>
+                      <p>質問に答えるとニーズに合わせたキャッチコピーが作れます。</p>
+                    </md-card-content>
+                  </md-card>
+                </a>
+              </div>
+            </div>                
+                
           </div>
         </md-content>
       </section>
     </script>
 
+    <script type="text/ng-template" id="copai.html">
+      <section>
+        <md-list>
+          <md-list-item class="md-padding">
+            <div class="md-padding" flex layout-fill>
+              <div class="md-whiteframe-z2" flex layout-fill>   
+                <md-content layout="column" flex layout-fill>
+                  <md-toolbar class="question-toolbar" md-theme="light-green">
+                    <div class="md-toolbar-tools">
+                      <h3 class="white-text">CopAIとは？</h3>
+                    </div>
+                  </md-toolbar>
+                  <md-content class="item-list" layout="row" flex layout-align="center" layout-fill>
+                    CopAIは、あなたのサービスに最適なキャッチコピーを人工知能によって自動生成するサービスです。
+                  </md-content>
+                </md-content>
+              </div>
+            </div>
+          </md-list-item>
+          <md-list-item class="md-padding">
+            <div class="md-padding" flex layout-fill>
+              <div class="md-whiteframe-z2" flex layout-fill> 
+                <md-content layout="column" flex layout-fill>
+                  <md-toolbar class="question-toolbar" md-theme="light-green">
+                    <div class="md-toolbar-tools">
+                      <h3 class="white-text">CopAIはどのような仕組みなの？</h3>
+                    </div>
+                  </md-toolbar>
+                  <md-content class="item-list" layout="row" flex layout-align="center" layout-fill>
+                    CopAIでは、Web上のあらゆるキャッチコピーを収集、分析し、文中の様々な表現をその効果に基づいて評価し、人々の興味や関心を惹き付けるような言葉の表現のデータベースを生成しています。そのデータベースからユーザーのニーズに合わせて最適な表現をピックアップし、組み合わせることでキャッチコピーを生成しています。
+                  </md-content>
+                </md-content>
+              </div>
+            </div>
+          </md-list-item>
+          <md-list-item class="md-padding">
+            <div class="md-padding" flex layout-fill>
+              <div class="md-whiteframe-z2" flex layout-fill> 
+                <md-content layout="column" flex layout-fill>
+                  <md-toolbar class="question-toolbar" md-theme="light-green">
+                    <div class="md-toolbar-tools">
+                      <h3 class="white-text">本当に効果があるの？</h3>
+                    </div>
+                  </md-toolbar>
+                  <md-content class="item-list" layout="row" flex layout-align="center" layout-fill>
+                    あります。CopAIは言葉の表現の良し悪しを、目的に応じたユーザーアクションによって評価してます。例えば、ブログ記事のタイトルであれば、「その記事を見てもらう」ことが目的であり、「記事のタイトルをクリックする」ことがユーザーアクションになります。CopAIでは、記事タイトルとクリック数のペアをWeb上から大量に取得し、タイトルに含まれる表現とクリック数の関係を統計的に分析することで、どの表現を用いれば高いクリック数が望めるのかを算出し、それを基準に文を評価しています。
+                  </md-content>
+                </md-content>
+              </div>
+            </div>
+          </md-list-item>
+          <md-list-item class="md-padding">
+            <div class="md-padding" flex layout-fill>
+              <div class="md-whiteframe-z2" flex layout-fill> 
+                <md-content layout="column" flex layout-fill>
+                  <md-toolbar class="question-toolbar" md-theme="light-green">
+                    <div class="md-toolbar-tools">
+                      <h3 class="white-text">CopAIは人工知能なの？</h3>
+                    </div>
+                  </md-toolbar>
+                  <md-content class="item-list" layout="row" flex layout-align="center" layout-fill>
+                    はい。言葉の表現の評価とその組み合わせには、人工知能アルゴリズムを用いています。
+                  </md-content>
+                </md-content>
+              </div>
+            </div>
+          </md-list-item>    
+        </md-list>
+      </section>
+    </script>
+
+    <script type="text/ng-template" id="aboutus.html">
+      <section>
+        <md-content layout="column" flex layout-fill class="md-padding">
+          代表  西田圭嗣 (Keishi Nishida)<br /><br />
+          スイス連邦工科大学ローザンヌ校（EPFL）コンピュータサイエンス学科で修士号を取得。スイス・フリブール州のITスタートアップにてエンジニアとして画像認識アルゴリズムの開発を担当。６年にわたる欧州での滞在で、アイルランド、ベルギー、スイスの三ヵ国を渡り歩いた後に帰国。2015年CopAIを設立。長年データ解析（信号処理、機械学習）に携わり、それらを専門とするが、Webアプリやスマートフォンアプリの開発にも興味・経験があり、幅広く手がける。最近の興味は人工知能と自然言語処理を用いて言葉の表現を分析すること。
+        </md-content>
+      </sction>
+    </script>
+
     <script type="text/ng-template" id="questions.q1.html">
       <section class="section_q1" ng-controller="q1Ctrl">
         <div layout="row" layout-align="center">
-          <div flex="60" class="md-whiteframe-z2">     
+          <div flex="60" flex-sm="100" class="md-whiteframe-z2">
             <md-toolbar class="question-toolbar" md-theme="light-green">
               <div class="md-toolbar-tools">
                 <h3 class="white-text">Q1, アプリのタイプを選択して下さい。</h3>
@@ -533,7 +682,7 @@ var response = {};
     <script type="text/ng-template" id="questions.q2.html" >
       <section class="section_q2" ng-controller="q2Ctrl">
         <div layout="row" layout-align="center">
-          <div flex="50" class="md-whiteframe-z2"> 
+          <div flex="60" flex-sm="100" class="md-whiteframe-z2">
             <md-toolbar class="question-toolbar" md-theme="light-green">
               <div class="md-toolbar-tools">
                 <h3 class="white-text">Q2, あなたのアプリの特徴は？</h3>
@@ -559,7 +708,7 @@ var response = {};
                     <md-divider layout-fill ng-show="$index == selectAppFeatureIndex"></md-divider>
                     <div layout="column" layout-fill class="expanded">
                       <md-radio-group ng-model="data.appFeatureDetail">
-                        <md-radio-button value="{{$index}}" ng-repeat="buttonItem in item.textList track by $index" class="md-primary">{{buttonItem.normal}}</md-radio-button>
+                        <md-radio-button value="{{$index}}" ng-repeat="buttonItem in item.textList track by $index" class="md-primary" md-theme="cyan">{{buttonItem.normal}}</md-radio-button>
                       </md-radio-group>
                       <md-button ng-click="goToNext()" class="md-primary md-raised" md-theme="cyan">次へ</md-button>
                     </div>
@@ -575,7 +724,7 @@ var response = {};
     <script type="text/ng-template" id="questions.q3.html">
       <section ng-controller="q3Ctrl" class="section_q3">  
         <div layout="row" layout-wrap layout-align="center">
-          <div flex="60">     
+          <div flex="60" flex-sm="100">
             <md-toolbar class="question-toolbar md-primary" md-theme="light-green">
               <div class="md-toolbar-tools">
                 <h3 class="white-text">Q3.1, あなたのアプリの価格は？</h3>
@@ -584,7 +733,7 @@ var response = {};
             <md-content class="item-list md-whiteframe-z1 md-padding md-default-theme white-bg" layout="column" flex layout-align="start" layout-fill>
               <md-radio-group layout="row" layout-wrap ng-model="data.price">
                 <div md-ink-ripple='#333' class="relative" ng-repeat="buttonItem in price track by $index" flex="50">
-                  <md-radio-button value="{{$index}}" flex="40" class="md-primary">{{buttonItem.label}}</md-radio-button>
+                  <md-radio-button value="{{$index}}" flex="40" class="md-primary" md-theme="cyan">{{buttonItem.label}}</md-radio-button>
                 </div>
               </md-radio-group>
             </md-content>
@@ -597,7 +746,7 @@ var response = {};
             <md-content class="item-list md-whiteframe-z1 md-padding md-default-theme white-bg" layout="column" flex layout-align="start" layout-fill>
               <md-radio-group layout="row" layout-wrap ng-model="data.target">
                 <div md-ink-ripple='#333' class="relative" ng-repeat="buttonItem in targetUser.userList track by $index" flex="50">
-                  <md-radio-button value="{{$index}}" flex="40" class="md-primary">{{buttonItem}}</md-radio-button>
+                  <md-radio-button value="{{$index}}" flex="40" class="md-primary" md-theme="cyan">{{buttonItem}}</md-radio-button>
                 </div>
               </md-radio-group>
             </md-content>
@@ -610,7 +759,7 @@ var response = {};
             <md-content class="item-list md-whiteframe-z1 md-padding md-default-theme white-bg" layout="column" flex layout-align="start" layout-fill>
               <md-radio-group layout="row" layout-wrap ng-model="data.download">
                 <div md-ink-ripple='#333' class="relative" ng-repeat="buttonItem in download.numList track by $index" flex="50">
-                  <md-radio-button value="{{$index}}" class="md-primary">{{buttonItem}}</md-radio-button>
+                  <md-radio-button value="{{$index}}" class="md-primary" md-theme="cyan">{{buttonItem}}</md-radio-button>
                 </div>
               </md-radio-group>
             </md-content>
@@ -624,7 +773,7 @@ var response = {};
     <script type="text/ng-template" id="questions.q4.html">
       <section ng-controller="q4Ctrl" class="section_q4">
         <div layout="row" layout-wrap layout-align="center">
-          <div flex="100">
+          <div flex="60" flex-sm="100">
             <md-toolbar class="question-toolbar md-primary md-default-theme" md-theme="light-green">
               <div class="md-toolbar-tools">
                 <h3 class="white-text">Q4, 好きなキャッチコピーを３つ選んで下さい。</h3>
@@ -644,21 +793,42 @@ var response = {};
     </script>
     <script type="text/ng-template" id="questions.answer.html">
       <section ng-controller="answerCtrl" class="section_answer">
-        <div layout="row" layout-wrap layout-align="center">
-          <div flex="100" ng-repeat="item in response track by $index">
-            <md-toolbar class="md-primary md-default-theme">
-              <div class="md-toolbar-tools">
-                <h4>{{item.text}}</h4>
+        <div layout="row" layout-wrap layout-align="center center">
+          <div flex="100" ng-repeat="item in response track by $index" class="answer-list">
+  
+            <md-card layout="column" flex layout-fill>
+
+              <div layout="column" layout-align="center center" class="light-green">
+                <div>
+                  <h2 class="white-text md-padding">{{item.text}}</h2>
+                <div>
+                <md-card-content layout="column" layout-align="center center">
+                  <md-list class="white-bg" layout-fill>
+                    <md-list-item flex-sm="100" ng-repeat="listItem in item.examples track by $index" layout="column">
+                      <div layout="row" layout-align="space-around center" class="md-padding" layout-fill>
+                        <div layout="row" flex="70" layout-align="start center"> 
+                          <i ng-style="{color: 'green', 'font-size':'31px', height:'31px'}" class="material-icons">check</i>
+                          <h3>
+                            {{listItem.text}}
+                          </h3>
+                        </div flex="30">
+                        <div>
+                          <md-button class="md-primary example-button" ng-click="selectPhraseIndex($index)"  md-theme="cyan">
+                            <span class="black-text">例文</span>
+                          </md-button>
+                        </div>
+                      </div>
+                      <div ng-show="$index == selectedPhraseIndex" class="md-padding">
+                        <div class="md-whiteframe-z1 md-padding">
+                          <div class="font-bold">{{listItem.appTitle}}</div>
+                          <div>{{listItem.description}}</div>
+                        </div>
+                      </div>
+                    </md-list-item>
+                  </md-list>
+                </md-card-content>
               </div>
-            </md-toolbar>
-            <md-content class="item-list md-whiteframe-z1 md-padding md-default-theme" layout="column" flex layout-align="start" layout-fill>
-              <div layout="row" layout-wrap layout-align="start">
-                <md-list-item flex="33" flex-sm="100" class="md-2-line" ng-repeat="listItem in item.examples track by $index">
-                  {{listItem.text}}
-                </md-list-item>
-              </div>
-            </md-content>
-            
+            </md-card>
           </div>
         </div>
       </section>
