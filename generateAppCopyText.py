@@ -181,8 +181,11 @@ for i in range(3):
 	generatedTexts.append({"text":outputText["text"], "examples":[]})
 
 	for phrase in outputText["examples"]:
-		for appId in phrase["appId"]:
-			appExampleList.append({"index":i, "text":phrase["text"], "appId": appId})
+		appId = phrase["appId"][0]
+		appExampleList.append({"index":i, "text":phrase["text"], "appId": appId})
+
+		#for appId in phrase["appId"]:
+		#	appExampleList.append({"index":i, "text":phrase["text"], "appId": appId})
 
 
 con = mdb.connect(HOST, USER, PASSWORD, DATABASE)

@@ -213,6 +213,8 @@
       var app = angular.module(appName, ['ngMaterial', 'ngAnimate', 'ui.router']);
       var appData = {};
 
+      var PATH_TO_PYTHON_FILE = '/text_generator/generateAppCopyText.py';
+
 var response = {};
 
       app.config(function ($stateProvider, $urlRouterProvider, $mdIconProvider, $mdThemingProvider) {
@@ -241,6 +243,11 @@ var response = {};
             url: '/q4',
             parent: 'questions',
             templateUrl: 'questions.q4.html'
+          })
+          .state('qa', {
+            url: '/qa',
+            parent: 'questions',
+            templateUrl: 'questions.qa.html'
           })
           .state('copai', {
             url: '/copai',
@@ -365,12 +372,24 @@ var response = {};
           }
 
           $scope.appQuestionData.q4 = q4Array;
-          $scope.submitData(); 
+          $scope.submitData(false); 
         });
 
-        $scope.submitData = function(){
+        $scope.$on('qa_data',function(){
+          $scope.appQuestionData.qa = questionsService.getQuestionData();
+          $scope.submitData(true); 
+        });
 
-          $http.post('/generateAppCopyText.py', {data: $scope.appQuestionData}).
+        $scope.submitData = function(quickMode){
+
+          var dataToSubmit = $scope.appQuestionData;
+          if (quickMode){
+            dataToSubmit.quick = true;
+          }else{
+            dataToSubmit.quick = false;  
+          }
+
+          $http.post(PATH_TO_PYTHON_FILE, {data: dataToSubmit}).
           then(function(response) {
             if(response.ok==1){
 
@@ -503,19 +522,26 @@ var response = {};
         }
       });
 
+      app.controller('qaCtrl', function($scope, $sce, $state, questionsService) {
+        $scope.appCategory = appData.appCategory;
+        $scope.data = {};
+
+        $scope.goToNext = function () {
+
+          questionsService.submitPartialQuestionData("qa_data",$scope.data);
+
+          $(".section_qa").animate({
+            opacity: 0
+          }, ANIM_DURATION, function(){
+    //        $state.go('q3');
+          }); 
+        };
+
+      });
+
       app.controller('answerCtrl', function($scope, $mdDialog, $state, questionsService) {
         $scope.response = response;
        
-        $scope.selectedPhraseIndex = undefined;
-        $scope.selectPhraseIndex = function (index) {
-          if ($scope.selectedPhraseIndex !== index) {
-            $scope.selectedPhraseIndex = index;
-          }
-          else {
-            $scope.selectedPhraseIndex = undefined;
-          }
-        };
-
         $scope.status = '';
         $scope.displayExample = function(ev) {
            
@@ -543,7 +569,7 @@ var response = {};
                       '   </div>' +
                       '</md-dialog>',
             parent: angular.element(document.body),
-            clickOutsideToClose:true
+            clickOutsideToClose: true
           });
         
         };
@@ -570,7 +596,7 @@ var response = {};
           <div ui-view class="fadeAnim" flex layout-fill>
             <div layout="row" layout-sm="column" layout-align="space-around center" flex>
               <div class="md-padding">
-                <a ui-sref="answer">                
+                <a ui-sref="qa">                
                   <md-card md-ink-ripple='#333' class="relative md-whiteframe-z2">
                     <div class="light-green" layout="column" layout-align="center center" >
                       <i class="md-padding material-icons md-48" ng-style="{color: 'white', 'font-size':'130px', height:'130px'}">looks_one</i>
@@ -840,6 +866,30 @@ var response = {};
         </div>
       </section>
     </script>
+    <script type="text/ng-template" id="questions.qa.html">
+      <section ng-controller="qaCtrl" class="section_qa">
+        <div layout="row" layout-wrap layout-align="center">
+          <div flex="60" flex-sm="100">
+
+            <md-toolbar class="question-toolbar" md-theme="light-green">
+                <div class="md-toolbar-tools">
+                  <h3 class="white-text">Q1, アプリのタイプを選択して下さい。</h3>
+                </div>
+            </md-toolbar>
+            <md-content class="item-list md-whiteframe-z1 md-padding md-default-theme white-bg" layout="column" flex layout-align="start" layout-fill>
+              <md-radio-group layout="row" layout-wrap ng-model="data.appCategory">
+                <div md-ink-ripple='#333' class="relative" ng-repeat="buttonItem in appCategory track by $index" flex="50">
+                  <md-radio-button value="{{$index}}" class="md-primary" md-theme="cyan">{{buttonItem.category}}</md-radio-button>
+                </div>
+              </md-radio-group>
+            </md-content>
+            <div layout="row" layout-wrap layout-align="center" class="md-padding">
+              <md-button ng-click="goToNext()" class="md-primary md-raised" flex="50" md-theme="cyan">次へ</md-button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </script>    
     <script type="text/ng-template" id="questions.answer.html">
       <section ng-controller="answerCtrl" class="section_answer">
         <div layout="row" layout-wrap layout-align="center center" class="light-green  md-whiteframe-z1">
