@@ -214,6 +214,7 @@
       var appData = {};
 
       var PATH_TO_PYTHON_FILE = '/text_generator/generateAppCopyText.py';
+    //  var PATH_TO_PYTHON_FILE = '/text_generator/testfile.php';
 
 var response = {};
 
@@ -284,6 +285,8 @@ var response = {};
 
         var questionsService = {};
         questionsService.data = {};
+        questionsService.answerData = {};
+
 
         questionsService.broadcastQuestionData = function(evevtName){
           $timeout(function(){
@@ -303,6 +306,14 @@ var response = {};
           return this.data;
         };
   
+        questionsService.setAnswerData = function(data){
+          this.answerData = data;
+        };
+
+        questionsService.getAnswerData = function(){
+          return this.answerData;
+        };
+
         return questionsService;
 
       });
@@ -350,6 +361,8 @@ var response = {};
       app.controller('questionCtrl', function($scope, $sce, $state, $http, questionsService) {
         $scope.appQuestionData = {};
 
+        $scope.answerData = [];
+
         $scope.$on('q1_data',function(){
           $scope.appQuestionData.q1 = questionsService.getQuestionData();
         });
@@ -389,10 +402,12 @@ var response = {};
             dataToSubmit.quick = false;  
           }
 
-          $http.post(PATH_TO_PYTHON_FILE, {data: dataToSubmit}).
+     //     $http.post(PATH_TO_PYTHON_FILE, {data: dataToSubmit}).
+          $http.post(PATH_TO_PYTHON_FILE, {"data": "faefaf"}).
           then(function(response) {
-            if(response.ok==1){
-
+            if(response.data.ok==1){
+              questionsService.setAnswerData(response.data.content);
+              $state.go("answer");
             }
           }, function(response) {
 
@@ -540,7 +555,7 @@ var response = {};
       });
 
       app.controller('answerCtrl', function($scope, $mdDialog, $state, questionsService) {
-        $scope.response = response;
+        $scope.response = questionsService.getAnswerData();
        
         $scope.status = '';
         $scope.displayExample = function(ev) {
@@ -561,7 +576,7 @@ var response = {};
             controller: DialogController,
             template: '<md-dialog>' +
                       '   <md-toolbar layout-align="center center" md-theme="cyan">「'+keyPhrase+'」の例文</md-toolbar>' +
-                      '   <md-content class="md-padding"><h3>'+appDesc+'</h3><span>'+appTitle+'</span></md-content>' +
+                      '   <md-content class="md-padding"><h3>'+appDesc+'</h3><span>参考：'+appTitle+'</span></md-content>' +
                       '   <div class="md-actions">' +
                       '     <md-button ng-click="hide()">' +
                       '       閉じる' +
@@ -896,12 +911,12 @@ var response = {};
 
           <md-list layout-fill class="white-bg answer-list md-whiteframe-z2">
             <md-list-item flex-sm="100" ng-repeat="(key, item) in response track by $index" layout="column" layout-align="start center" class="answer-list-item" >
-              <div layout="row" layout-align="start center">
-                <i ng-style="{'margin': '5px', color: 'green', 'font-size':'24px', height:'24px'}" class="material-icons">check</i>
-                <h4 style="margin: 0">{{item.text}}</h4>
+              <div layout-fill layout="row" layout-align="start center">
+               <i ng-style="{'margin-right': '3px', color: 'green', 'font-size':'24px', height:'24px'}" class="material-icons">check</i>
+                <h4 style="margin: 0; width: 98%; float: right">{{item.text}}</h4>
               </div>
-              <ul layout-fill style="list-style:none; margin: 0; padding: 0">
-                <li ng-repeat="listItem in item.examples track by $index" style="float:left;  margin:0; padding:0" layout="row">
+              <ul layout-fill style="list-style:none; margin: 0 0 10px 20px; padding: 0">
+                <li ng-repeat="listItem in item.examples track by $index" style="float:left;  margin: 0; padding:0" layout="row">
                   <div layout="row">
                     <div layout="row" layout-align="start center"> 
                       <md-button class="md-primary example-button" ng-click="displayExample($event)" md-theme="cyan" data-app-title="{{key}}" data-app-desc="{{$index}}">
